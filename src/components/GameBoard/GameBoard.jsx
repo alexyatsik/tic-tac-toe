@@ -6,15 +6,17 @@ const initialGameBoard = [
 	[null, null, null]
 ];
 
-export default function GameBoard () {
+export default function GameBoard ({ onSelectField, activePlayerSymbol }) {
 	const [gameBoard, setGameBoard] = useState(initialGameBoard);
 
 	function fieldClickHandler(rowIndex, colIndex) {
 		setGameBoard((prevState) => {
 			const updatedBoard = [...prevState.map(innerArray => [...innerArray])];
-			updatedBoard[rowIndex][colIndex] = 'X';
+			updatedBoard[rowIndex][colIndex] = activePlayerSymbol;
 			return updatedBoard;
 		});
+
+		onSelectField();
 	}
 
 	return <ol id="game-board">
