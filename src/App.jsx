@@ -3,17 +3,22 @@ import GameBoard from "./components/GameBoard/GameBoard.jsx";
 import {useState} from "react";
 import Log from "./components/Log/Log.jsx";
 
+function deriveActivePlayer(gameTurns) {
+	let currentPlayer = 'X';
+
+	if (gameTurns.length > 0 && gameTurns[0].player === 'X')
+		currentPlayer = 'O';
+
+	return currentPlayer;
+}
+
 function App() {
 	const [gameTurns, setGameTurns] = useState([]);
-	const [activePlayer, setActivePlayer] = useState('X');
+	const activePlayer = deriveActivePlayer(gameTurns);
 
 	function fieldSelectHandler(row, column) {
-		setActivePlayer(currentPLayer => currentPLayer === 'X' ? 'O' : 'X' );
 		setGameTurns(prevState => {
-			let currentPlayer = 'X';
-
-			if (prevState.length > 0 && prevState[0].player === 'X')
-				currentPlayer = 'O';
+			const currentPlayer = deriveActivePlayer(prevState);
 
 			const updatedTurns = [
 				{
@@ -39,7 +44,7 @@ function App() {
 					onSelectField={fieldSelectHandler}
 				/>
 			</div>
-			<Log />
+			<Log logs={gameTurns} />
 		</main>
 	);
 }
